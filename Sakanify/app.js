@@ -12,7 +12,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const postRouter = require('./routes/postsRoutes');
 const studentRouter = require('./routes/studentRoutes');
 const commentRouter = require('./routes/commentRoutes');
-
+// "mongoose": "^8.3.0",
 const app = express();
 
 // 1) GLOBAL MIDDLEWARES
