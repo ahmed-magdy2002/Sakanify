@@ -7,6 +7,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 // "node server.js",
+// "sharp": "^0.33.3",
 
 dotenv.config({ path: './config.env' });
 console.log(process.env.PORT);
