@@ -35,17 +35,20 @@ exports.uploadPostImages = uploadImage.uploadMixOfImages([
 ]);
 
 exports.resizePostImages = catchAsync(async (req, res, next) => {
-  // console.log(req.files);
+  console.log('resize middlewae');
   //1- Image processing for imageCover
   if (req.files.imageCover) {
-    const ext = req.file.mimetype.split('/').join(' ')[1];
-    const imageCoverFileName = `post-${uuidv4()}-${Date.now()}-cover.${ext}`;
+    console.log('resize middlewae 1.1');
+    // console.log(req.files.imageCover, '---------', req.files.images);
+    // const ext = req.file.mimetype.split('/').join(' ')[1];
+    const imageCoverFileName = `post-${uuidv4()}-${Date.now()}-cover.jpeg`;
     console.log(imageCoverFileName);
     await sharp(req.files.imageCover[0].buffer)
       // .resize(2000, 1333)
       .toFormat('jpeg')
       .jpeg({ quality: 95 });
     // .toFile(`public/img/posts/${imageCoverFileName}`);
+    console.log('resize middlewae 1.2');
 
     // Save image into our db
     const storageRef = ref(storage, imageCoverFileName);
@@ -54,16 +57,18 @@ exports.resizePostImages = catchAsync(async (req, res, next) => {
     const url = await getDownloadURL(storageRef);
     req.body.imageCoverUrl = url;
     req.body.imageCover = imageCoverFileName;
+    console.log('resize middlewae 1.1.1');
   }
   //2- Image processing for images
 
   if (req.files.images) {
+    console.log('resize middlewae 1.2');
     req.body.images = [];
     req.body.imagesUrl = [];
     await Promise.all(
       req.files.images.map(async (img, index) => {
-        const ext = img.mimetype.split('/').join(' ')[1];
-        const imageName = `post-${uuidv4()}-${Date.now()}-${index + 1}.${ext}`;
+        // const ext = img.mimetype.split('/').join(' ')[1];
+        const imageName = `post-${uuidv4()}-${Date.now()}-${index + 1}.jpeg`;
 
         await sharp(img.buffer)
           // .resize(2000, 1333)
@@ -80,6 +85,7 @@ exports.resizePostImages = catchAsync(async (req, res, next) => {
         req.body.images.push(imageName);
       })
     );
+    console.log('resize middlewae 1.3');
   }
   next();
   // if (req.files.images) {
@@ -135,7 +141,7 @@ exports.getPost = catchAsync(async (req, res, next) => {
 });
 
 exports.createPost = catchAsync(async (req, res, next) => {
-  // console.log(req.body);
+  console.log('7abibi etfadal 3');
   const newpost = await post.create({
     userId: req.student.id,
     name: req.student.name,

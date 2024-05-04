@@ -81,6 +81,7 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token;
+  console.log('7abibi etfadal');
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -122,6 +123,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
+    console.log('7abibi etfadal2');
     // roles ['admin', 'lead-guide']. role='user'
     if (!roles.includes(req.student.role)) {
       return next(

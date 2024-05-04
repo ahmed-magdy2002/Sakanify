@@ -35,7 +35,7 @@ exports.uploadUserImage = uploadImage.uploadSingleImage('photo');
 exports.resizeImage = async (req, res, next) => {
   //Processing Single Image
   if (req.file) {
-    const ext = req.file.mimetype.split('/')[1];
+    // const ext = req.file.mimetype.split('/')[1];
     // const ext = req.file.mimetype.split('/').join(' ')[1];
 
     const filename = `user-${uuidv4()}-${Date.now()}-photo.jpeg`;
