@@ -2,6 +2,7 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Post = require('./../../models/postModel');
+const student = require('./../../models/studentModel');
 
 dotenv.config({ path: './config.env' });
 
@@ -13,14 +14,14 @@ const DB = process.env.DATABASE.replace(
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
-    useUnifiedTopology:true
+    useUnifiedTopology: true,
   })
   .then(() => console.log('DB connection successful!'));
 
 // READ JSON FILE
-const posts = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+// const posts = JSON.parse(
+//   fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
+// );
 
 // IMPORT DATA INTO DB
 const importData = async () => {
@@ -36,7 +37,7 @@ const importData = async () => {
 // DELETE ALL DATA FROM DB
 const deleteData = async () => {
   try {
-    await Post.deleteMany();
+    await student.deleteMany();
     console.log('Data successfully deleted!');
   } catch (err) {
     console.log(err);

@@ -24,6 +24,7 @@ const createSendToken = (student, statusCode, res) => {
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
     res.cookie('jwt', token, cookieOptions);
+    res.setHeader('authorization', `Bearer ${token}`);
 
     // Remove password from output
     student.password = undefined;
@@ -81,7 +82,6 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token;
-  console.log('7abibi etfadal');
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
