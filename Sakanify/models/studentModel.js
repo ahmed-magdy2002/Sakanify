@@ -38,7 +38,12 @@ const studentSchema = new mongoose.Schema(
       ],
     },
     photo: String,
-    photoUrl: String,
+    photoUrl: {
+      type: String,
+      default:
+        'https://firebasestorage.googleapis.com/v0/b/sakanify-upload.appspot.com/o/default.jpg?alt=media&token=d8956b4a-5731-4e36-9f1b-aeedce3e587f',
+    },
+
     role: {
       type: String,
       enum: ['student', 'owner'],

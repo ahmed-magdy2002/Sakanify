@@ -12,7 +12,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authController.protect, postController.getAllPosts)
+  .get(postController.getAllPosts)
   .post(
     authController.protect,
     authController.restrictTo('owner'),
@@ -31,7 +31,7 @@ router
   )
   .delete(
     authController.protect,
-    authController.restrictTo('admin', 'lead-guide'),
+    authController.restrictTo('admin'),
     postController.deletePost
   );
 router

@@ -25,7 +25,6 @@ const createSendToken = (student, statusCode, res) => {
 
     res.cookie('jwt', token, cookieOptions);
     res.setHeader('authorization', `Bearer ${token}`);
-
     // Remove password from output
     student.password = undefined;
 

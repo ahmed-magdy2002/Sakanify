@@ -18,11 +18,7 @@ router.post(
 router.post('/login', upload.none(), authController.login);
 
 router.post('/forgotPassword', upload.none(), authController.forgotPassword);
-router.patch(
-  '/resetPassword/:token',
-  upload.none(),
-  authController.resetPassword
-);
+router.patch('/resetPassword', upload.none(), authController.resetPassword);
 
 router.patch(
   '/updateMyPassword',
