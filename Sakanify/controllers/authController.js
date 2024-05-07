@@ -151,7 +151,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // const resetURL = `${req.protocol}://${req.get(
   //   'host'
   // )}/api/v1/users/resetPassword/${resetToken}`;
-  const message = `Hi ${user.name},\n We received a request to reset the password on your Sakanify Account. \n ${resetToken} \n Enter this code to complete the reset. \n Thanks for helping us keep your account secure.\n The Sakanify Team;`;
+  const message = `Hi ${Student.name},\n We received a request to reset the password on your Sakanify Account. \n ${resetToken} \n Enter this code to complete the reset. \n Thanks for helping us keep your account secure.\n The Sakanify Team;`;
   try {
     await sendEmail({
       email: Student.email,
