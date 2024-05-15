@@ -81,6 +81,7 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token;
+  console.log('ezzzzzay');
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -114,6 +115,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError('User recently changed password! Please log in again.', 401)
     );
   }
+  console.log('ezzzzzay');
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.student = currentstudent;

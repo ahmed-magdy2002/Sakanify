@@ -34,6 +34,7 @@ router.patch(
   studentController.updateMe
 );
 router.delete('/deleteMe', authController.protect, studentController.deleteMe);
+router.get('/Me', authController.protect, studentController.myData);
 
 router
   .route('/')

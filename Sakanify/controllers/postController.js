@@ -85,7 +85,7 @@ exports.resizePostImages = catchAsync(async (req, res, next) => {
         req.body.images.push(imageName);
       })
     );
-    console.log('resize middlewae 1.3');
+    // console.log('resize middlewae 1.3');
   }
   next();
   // if (req.files.images) {
@@ -125,8 +125,25 @@ exports.getAllPosts = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getMyPosts = catchAsync(async (req, res, next) => {
+  const posts = await post.find({ userId: req.student.id });
+
+  if (!posts) {
+    return next(new AppError('No posts found for that user', 404));
+  }
+
+  // SEND RESPONSE
+  res.status(200).json({
+    status: 'success',
+    results: posts.length,
+    data: {
+      posts,
+    },
+  });
+});
+
 exports.getPost = catchAsync(async (req, res, next) => {
-  const post = await post.findById(req.params.id);
+  const Post = await post.findById(req.params.id);
 
   if (!post) {
     return next(new AppError('No post found with that ID', 404));
@@ -135,7 +152,7 @@ exports.getPost = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      post,
+      Post,
     },
   });
 });
@@ -161,7 +178,7 @@ exports.createPost = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePost = catchAsync(async (req, res, next) => {
-  const post = await post.findByIdAndUpdate(req.params.id, req.body, {
+  const Post = await post.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
@@ -173,13 +190,13 @@ exports.updatePost = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      post,
+      Post,
     },
   });
 });
 
 exports.deletePost = catchAsync(async (req, res, next) => {
-  const post = await post.findByIdAndDelete(req.params.id);
+  const Post = await post.findByIdAndDelete(req.params.id);
 
   if (!comment) {
     return next(new AppError('No post found with that ID', 404));

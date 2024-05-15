@@ -118,13 +118,32 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+exports.myData = catchAsync(async (req, res, next) => {
+  const Student = await student.findById(req.student.id);
 
-exports.getStudent = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
+  if (!Student) {
+    return next(new AppError('No user found ', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      Student,
+    },
   });
-};
+});
+exports.getStudent = catchAsync(async (req, res, next) => {
+  const Student = await student.findById(req.params.id);
+  if (!Student) {
+    return next(new AppError('No user found ', 404));
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      Student,
+    },
+  });
+});
 exports.createStudent = (req, res) => {
   res.status(500).json({
     status: 'error',

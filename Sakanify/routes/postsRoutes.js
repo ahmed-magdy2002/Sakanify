@@ -21,6 +21,13 @@ router
     postController.createPost
   );
 
+router.get(
+  '/MyPosts',
+  authController.protect,
+  authController.restrictTo('owner'),
+  postController.getMyPosts
+);
+
 router
   .route('/:id')
   .get(postController.getPost)
