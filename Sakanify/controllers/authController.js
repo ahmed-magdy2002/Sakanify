@@ -81,7 +81,6 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token;
-  console.log('ezzzzzay');
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -115,7 +114,6 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError('User recently changed password! Please log in again.', 401)
     );
   }
-  console.log('ezzzzzay');
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.student = currentstudent;
@@ -124,7 +122,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    console.log('7abibi etfadal2');
     // roles ['admin', 'lead-guide']. role='user'
     if (!roles.includes(req.student.role)) {
       return next(
@@ -205,7 +202,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
-  const Student = await student.findById(req.user.id).select('+password');
+  const Student = await student.findById(req.student.id).select('+password');
 
   // 2) Check if POSTed current password is correct
   if (
@@ -222,3 +219,30 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(Student, 200, res);
 });
+
+exports.loginCheck = async (req, res, next) => {
+  try {
+    let token;
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET
+      );
+      const currentstudent = await student.findById(decoded.id);
+      req.student = currentstudent;
+      next();
+    } else {
+      next();
+    }
+  } catch (err) {
+    return next();
+    // if (err.name === 'JsonWebTokenError') {
+    //   return next();
+    // }
+    // if (err.name === 'TokenExpiredError') {
+    //   return next();
+    // }
+  }
+};

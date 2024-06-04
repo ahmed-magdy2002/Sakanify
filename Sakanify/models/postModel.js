@@ -21,7 +21,28 @@ const postSchema = new mongoose.Schema(
     userId: String,
     address: {
       type: String,
+      trim: true,
       required: [true, 'post should have an address'],
+    },
+    city: {
+      type: String,
+      trim: true,
+      required: [true, 'post should have an city'],
+    },
+    addressUp: {
+      type: String,
+      trim: true,
+      required: [true, 'post should have an address'],
+    },
+    street: {
+      type: String,
+      trim: true,
+      required: [true, 'post should have an street'],
+    },
+    floorNum: {
+      type: String,
+      trim: true,
+      required: [true, 'post should have an floor number'],
     },
     services: [String],
     postType: {
@@ -39,6 +60,7 @@ const postSchema = new mongoose.Schema(
       min: [1, 'Rating must be above 1.0'],
       max: [5, 'Rating must be below 5.0'],
     },
+    userImage: String,
     cleanQuantity: {
       type: Number,
       default: 0,

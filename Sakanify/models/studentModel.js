@@ -49,6 +49,7 @@ const studentSchema = new mongoose.Schema(
       enum: ['student', 'owner'],
       required: [true, 'you must submit your role'],
     },
+    favourites: [String],
     password: {
       type: String,
       required: [true, 'Please provide a password'],

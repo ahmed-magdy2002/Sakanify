@@ -12,7 +12,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(postController.getAllPosts)
+  .get(authController.loginCheck, postController.getAllPosts)
   .post(
     authController.protect,
     authController.restrictTo('owner'),
@@ -26,6 +26,13 @@ router.get(
   authController.protect,
   authController.restrictTo('owner'),
   postController.getMyPosts
+);
+
+router.get(
+  '/MyFaves',
+  authController.protect,
+  authController.restrictTo('student'),
+  postController.getMyFaves
 );
 
 router
@@ -45,5 +52,18 @@ router
   .route('/:id/rates')
   .post(authController.protect, upload.none(), rateController.createRate)
   .patch(authController.protect, upload.none(), rateController.updateRate);
+
+router
+  .route('/:id/faves')
+  .post(
+    authController.protect,
+    authController.restrictTo('student'),
+    postController.addFaves
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('student'),
+    postController.deleteFaves
+  );
 
 module.exports = router;

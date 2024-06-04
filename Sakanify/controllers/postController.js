@@ -1,4 +1,5 @@
 const post = require('./../models/postModel');
+const student = require('../models/studentModel');
 const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -114,15 +115,25 @@ exports.getAllPosts = catchAsync(async (req, res, next) => {
     .limitFields()
     .paginate();
   const posts = await features.query;
-
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    results: posts.length,
-    data: {
-      posts,
-    },
-  });
+  if (req.student) {
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'success',
+      results: posts.length,
+      data: {
+        posts,
+      },
+      favourites: req.student.favourites,
+    });
+  } else {
+    res.status(200).json({
+      status: 'success',
+      results: posts.length,
+      data: {
+        posts,
+      },
+    });
+  }
 });
 
 exports.getMyPosts = catchAsync(async (req, res, next) => {
@@ -158,12 +169,12 @@ exports.getPost = catchAsync(async (req, res, next) => {
 });
 
 exports.createPost = catchAsync(async (req, res, next) => {
-  console.log('7abibi etfadal 3');
   const newpost = await post.create({
     userId: req.student.id,
     name: req.student.name,
     email: req.student.email,
     phone: req.student.phone,
+    userImage: req.student.photoUrl,
     ...req.body,
   });
   if (!newpost) {
@@ -205,5 +216,54 @@ exports.deletePost = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: 'success',
     data: null,
+  });
+});
+
+exports.addFaves = catchAsync(async (req, res, next) => {
+  const Student = await student.findById(req.student.id);
+  if (!Student.favourites.includes(req.params.id)) {
+    Student.favourites.push(req.params.id);
+    await Student.save();
+  } else {
+    return next(new AppError('this Post already in your favourites', 404));
+  }
+  // SEND RESPONSE
+  res.status(200).json({
+    status: 'success',
+    data: {
+      Student,
+    },
+  });
+});
+exports.deleteFaves = catchAsync(async (req, res, next) => {
+  const Student = await student.findById(req.student.id);
+  if (Student.favourites.includes(req.params.id)) {
+    Student.favourites = Student.favourites.filter(
+      (mov, i, arr) => mov != req.params.id
+    );
+    await Student.save();
+  } else {
+    return next(new AppError('this Post isnot in your favourites', 404));
+  }
+  // SEND RESPONSE
+  res.status(200).json({
+    status: 'success',
+    data: {
+      Student,
+    },
+  });
+});
+
+exports.getMyFaves = catchAsync(async (req, res, next) => {
+  const arrayOfIds = req.student.favourites;
+  console.log(arrayOfIds);
+  const faves = await post.find({ _id: { $in: arrayOfIds } });
+
+  res.status(200).json({
+    status: 'success',
+    results: faves.length,
+    data: {
+      faves,
+    },
   });
 });
