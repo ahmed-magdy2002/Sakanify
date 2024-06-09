@@ -18,7 +18,7 @@ router.post(
 router.post('/login', upload.none(), authController.login);
 
 router.post('/forgotPassword', upload.none(), authController.forgotPassword);
-router.patch('/resetPassword', upload.none(), authController.resetPassword);
+router.post('/resetPassword', upload.none(), authController.resetPassword);
 router.post(
   '/changePlan',
   authController.protect,

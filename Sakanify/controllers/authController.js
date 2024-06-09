@@ -140,7 +140,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   if (!Student) {
     return next(new AppError('There is no user with email address.', 404));
   }
-  console.log(req.body.email);
   // 2) Generate the random reset token
   const resetToken = Student.createPasswordResetToken();
   console.log(resetToken);
