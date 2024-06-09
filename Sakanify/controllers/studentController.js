@@ -162,3 +162,23 @@ exports.deleteStudent = (req, res) => {
     message: 'This route is not yet defined!',
   });
 };
+
+exports.changePlan = catchAsync(async (req, res, next) => {
+  const Student = await student.findByIdAndUpdate(req.student.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!Student) {
+    return next(new AppError('No user found ', 404));
+  }
+  if (Student.postCounter > 3) {
+    Student.postCounter = 3;
+    await Student.save();
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      Student,
+    },
+  });
+});

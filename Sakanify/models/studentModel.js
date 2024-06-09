@@ -26,6 +26,15 @@ const studentSchema = new mongoose.Schema(
         'you should submit your gender',
       ],
     },
+    postCounter: {
+      type: Number,
+      default: 0,
+    },
+    postPlan: {
+      type: String,
+      default: 'starter',
+      enum: ['starter', 'upgrade 1', 'upgrade 2', 'upgrade 3'],
+    },
     nationalId: String,
     faculty: String,
     phone: {

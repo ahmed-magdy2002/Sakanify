@@ -169,6 +169,16 @@ exports.getPost = catchAsync(async (req, res, next) => {
 });
 
 exports.createPost = catchAsync(async (req, res, next) => {
+  const Student = await student.findById(req.student.id);
+  // console.log(Student.postCounter);
+  if (Student.postCounter === 3 && Student.postPlan === 'starter')
+    return next(new AppError('you run out of plan', 404));
+  if (Student.postCounter === 8 && Student.postPlan === 'upgrade 1')
+    return next(new AppError('you run out of plan', 404));
+  if (Student.postCounter === 13 && Student.postPlan === 'upgrade 2')
+    return next(new AppError('you run out of plan', 404));
+  if (Student.postCounter === 18 && Student.postPlan === 'upgrade 3')
+    return next(new AppError('you run out of plan', 404));
   const newpost = await post.create({
     userId: req.student.id,
     name: req.student.name,
@@ -180,6 +190,8 @@ exports.createPost = catchAsync(async (req, res, next) => {
   if (!newpost) {
     return next(new AppError('No post created', 404));
   }
+  Student.postCounter++;
+  await Student.save();
   res.status(201).json({
     status: 'success',
     data: {

@@ -19,7 +19,12 @@ router.post('/login', upload.none(), authController.login);
 
 router.post('/forgotPassword', upload.none(), authController.forgotPassword);
 router.patch('/resetPassword', upload.none(), authController.resetPassword);
-
+router.post(
+  '/changePlan',
+  authController.protect,
+  upload.none(),
+  studentController.changePlan
+);
 router.patch(
   '/updateMyPassword',
   upload.none(),

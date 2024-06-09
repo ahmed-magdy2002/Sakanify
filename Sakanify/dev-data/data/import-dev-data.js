@@ -22,12 +22,27 @@ mongoose
 // const posts = JSON.parse(
 //   fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
 // );
+// try {
+//   await Post.create(posts);
+//   console.log('Data successfully loaded!');
+// } catch (err) {
+//   console.log(err);
+// }
+// process.exit();
 
 // IMPORT DATA INTO DB
 const importData = async () => {
   try {
-    await Post.create(posts);
-    console.log('Data successfully loaded!');
+    const updates = await student.updateMany(
+      { postCounter: { $exists: false }, postPlan: { $exists: false } },
+      {
+        $set: {
+          postCounter: 0,
+          postPlan: 'starter',
+        },
+      }
+    );
+    console.log('Data successfully updated!');
   } catch (err) {
     console.log(err);
   }
