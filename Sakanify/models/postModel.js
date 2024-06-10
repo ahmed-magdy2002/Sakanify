@@ -8,7 +8,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A post must have a name'],
       trim: true,
-      minlength: [10, 'A post name must have more or equal then 10 characters'],
+      // minlength: [10, 'A post name must have more or equal then 10 characters'],
       // validate: [validator.isAlpha, 'post name must only contain characters']
     },
     email: {
